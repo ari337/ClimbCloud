@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; 
 
 public class PlayerController : MonoBehaviour
 {
     Rigidbody2D rigid2D;
     Animator animator;
     float jumpForce = 680.0f;
-    float walkForce = 30.0f;
+    float walkForce = 8.0f;
     float maxWalkSpeed = 2.0f;
 
     private void Start()
@@ -17,7 +18,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && rigid2D.velocity.y==0)
         {
             rigid2D.AddForce(transform.up*this.jumpForce);
 
@@ -43,5 +44,16 @@ public class PlayerController : MonoBehaviour
 
         //플레이어 속도에 맞춰 애니메이션 속도를 바꾼다.
         animator.speed = (float)(speedx / 2.0);
+
+        if (transform.position.y < -10)
+        {
+            SceneManager.LoadScene("GameScene");
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("골");
+        SceneManager.LoadScene("ClearScene");
     }
 }
